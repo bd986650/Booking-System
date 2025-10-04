@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Booking System",
-  description: "Book your place in everywhere",
+  title: "Кубик - Система Бронирования",
+  description: "Забронируйте рабочее пространство в любое время",
   icons: {
     icon: "/favicon.ico"
   },
