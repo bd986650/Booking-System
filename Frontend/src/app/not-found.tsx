@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
+import Button from "../components/ui/Button";
 
 export default function NotFound() {
   const router = useRouter();
@@ -17,21 +18,15 @@ export default function NotFound() {
           Извините, страница, которую вы ищете, не существует.
         </p>
 
-        <div className="flex mt-6 gap-3 w-full">
-          <button
-            onClick={() => router.back()}
-            className="flex-1 px-5 py-2 text-sm text-gray-700 transition-colors duration-200 bg-white border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-200 dark:border-gray-700"
-          >
+        <div className="flex items-center mt-6 gap-x-3 w-full">
+          <Button variant="outline" color="gray" onClick={() => router.back()}>
             Назад
-          </button>
-
-          <button
-            onClick={() => router.push("/")}
-            className="flex-1 px-5 py-2 text-sm text-white transition-colors duration-200 bg-blue-500 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
-          >
+          </Button>
+          <Button variant="filled" color="blue" onClick={() => router.push("/")}>
             На главную
-          </button>
+          </Button>
         </div>
+
       </div>
     </section>
   );

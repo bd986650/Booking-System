@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../components/ui/Button";
 
 export default function Home() {
   return (
@@ -11,7 +12,10 @@ export default function Home() {
           - твой рабочий уголок в один клик
         </h2>
 
-        
+        <div className="flex gap-4">
+          <Button variant="filled" color="blue">Вход</Button>
+          <Button variant="outline" color="blue">Регистрация</Button>
+        </div>
       </div>
     </section>
   );
