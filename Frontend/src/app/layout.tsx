@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Кубик - Система Бронирования",
   description: "Забронируйте рабочее пространство в любое время",
   icons: {
-    icon: "/favicon.ico"
+    icon: "/images/cube.png"
   },
 };
 
