@@ -13,9 +13,10 @@ node_modules
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
+# Next.js build and cache
+.next/
+out/
+build/
 
 # production
 /build
@@ -39,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# macOS system files
+.DS_Store
