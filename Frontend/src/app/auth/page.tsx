@@ -1,27 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import Button from "@/shared/ui/Buttons/Button";
+import AuthForm from "@/features/auth/ui/AuthForm";
+import { RoleSwitcher } from "@/features/auth/ui/RoleSwitcher";
+import { UserRole } from "@/features/auth/model/roles";
 
 const AuthPage: React.FC = () => {
-  const [mode, setMode] = useState<"login" | "register">("login");
+  const [role, setRole] = useState<UserRole>("EMPLOYEE");
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-white">
-      <div className="max-w-md w-full p-6 shadow-lg rounded-xl bg-gray-50">
-        <div className="mt-6 text-center">
-          <Button
-            variant="outline"
-            color="blue"
-            onClick={() =>
-              setMode(mode === "login" ? "register" : "login")
-            }
-          >
-            {mode === "login" ? "Регистрация" : "Назад ко входу"}
-          </Button>
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+      <div className="bg-white shadow rounded-2xl p-6 w-full max-w-md">
+        <RoleSwitcher role={role} onChange={setRole} />
+        <AuthForm mode="login" role={role} />
       </div>
-    </section>
+    </div>
   );
 };
 
