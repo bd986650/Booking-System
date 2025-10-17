@@ -22,7 +22,7 @@ const FeaturesSection: React.FC = () => {
 
       <div className="mt-10 w-full max-w-6xl px-6">
         <Button asChild variant="outline" color="blue" className="w-full">
-          <Link href="/auth">Начать сейчас</Link>
+          <Link href="/auth/register">Начать сейчас</Link>
         </Button>
       </div>
     </section>

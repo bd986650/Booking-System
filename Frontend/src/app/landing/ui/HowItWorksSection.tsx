@@ -14,7 +14,7 @@ const HowItWorksSection: React.FC = () => {
                         <div className="aspect-[76/59] relative rounded-2xl p-px">
                             <Image
                                 src="/images/howitworks.png"
-                                className="rounded-[15px]"
+                                className="rounded-[15px] h-full w-full object-cover"
                                 alt="Иллюстрация бронирования офиса"
                                 width={1207}
                                 height={929}

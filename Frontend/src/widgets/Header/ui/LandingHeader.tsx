@@ -8,10 +8,10 @@ const LandingHeader: React.FC = () => {
             <LogoIcon/>
             <div className="flex gap-4">
                 <Button asChild variant="filled" color="blue">
-                    <Link href="/auth">Вход</Link>
+                    <Link href="/auth/login">Вход</Link>
                 </Button>
                 <Button asChild variant="outline" color="blue">
-                    <Link href="/auth">Регистрация</Link>
+                    <Link href="/auth/register">Регистрация</Link>
                 </Button>
             </div>
         </header>
