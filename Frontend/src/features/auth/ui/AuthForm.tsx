@@ -1,95 +1,115 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "../model/useAuth";
-import { UserRole, ROLE_LABELS } from "../model/roles";
-
-export type AuthMode = "login" | "register";
-
+import React, { useState } from "react";
+import { UserRole } from "@/features/auth/model/roles";
+import { InputField } from "@/shared/ui/InputField/InputField";
+import { AuthButton } from "@/shared/ui/Buttons/AuthButton";
+import { RoleSelector } from "@/shared/ui/RoleSelector/RoleSelector";
+  
 interface AuthFormProps {
-  mode: AuthMode;
+  mode: "login" | "register";
+  onSubmit: (data: AuthFormData) => void;
+  onSwitchMode: () => void;
+}
+
+export interface AuthFormData {
+  fullName?: string;
+  email: string;
+  password: string;
   role: UserRole;
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ mode, role }) => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [name, setName] = useState<string>("");
+export const AuthForm: React.FC<AuthFormProps> = ({
+  mode,
+  onSubmit,
+  onSwitchMode,
+}) => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<UserRole>("EMPLOYEE");
 
-  const { sendAuth, loading, error } = useAuth(mode);
-  const router = useRouter();
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const response = await sendAuth(role, email, password, name);
-
-    if (response.ok) {
-      const redirects: Record<UserRole, string> = {
-        EMPLOYEE: "/dashboard/employee",
-        LOCAL_ADMIN: "/dashboard/local-admin",
-        ADMIN: "/dashboard/admin",
-      };
-
-      router.push(redirects[role]);
+    const formData: AuthFormData = {
+      email,
+      password,
+      role: selectedRole,
+    };
+    
+    if (mode === "register") {
+      formData.fullName = fullName;
     }
+    
+    onSubmit(formData);
   };
 
+  const isLogin = mode === "login";
+  const isRegister = mode === "register";
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col space-y-4"
-      noValidate
-    >
-      {mode === "register" && (
-        <input
-          type="text"
-          name="name"
-          placeholder="Имя"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="border p-2 rounded"
-          required
+    <>
+      {isRegister && (
+        <RoleSelector
+          selectedRole={selectedRole}
+          onRoleChange={setSelectedRole}
+          title={isLogin ? "Выберите тип входа" : "Выберите тип аккаунта"}
         />
       )}
 
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 rounded"
-        required
-      />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6">
+        {isRegister && (
+          <InputField
+            label="ФИО"
+            type="text"
+            value={fullName}
+            onChange={setFullName}
+            placeholder="Введите ваше полное имя"
+          />
+        )}
 
-      <input
-        type="password"
-        name="password"
-        placeholder="Пароль"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded"
-        required
-      />
+        <InputField
+          label="Почта"
+          type="email"
+          value={email}
+          onChange={setEmail}
+          placeholder="Введите вашу почту"
+        />
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition disabled:opacity-60"
-      >
-        {loading
-          ? "Загрузка..."
-          : mode === "login"
-          ? "Войти"
-          : "Зарегистрироваться"}{" "}
-        как {ROLE_LABELS[role]}
-      </button>
+        <InputField
+          label="Пароль"
+          type="password"
+          value={password}
+          onChange={setPassword}
+          placeholder="Введите ваш пароль"
+          showPassword={showPassword}
+          onTogglePassword={() => setShowPassword(!showPassword)}
+        />
 
-      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-    </form>
+        <AuthButton type="submit">
+          {isLogin ? "Войти" : "Зарегистрироваться"}
+        </AuthButton>
+
+        <p className="text-sm text-gray-600 text-center">
+          {isLogin ? "Новый пользователь? " : "Уже есть аккаунт? "}
+          <button
+            type="button"
+            onClick={onSwitchMode}
+            className="text-blue-500 hover:text-blue-800 hover:underline font-medium transition-colors"
+          >
+            {isLogin ? "Зарегистрироваться" : "Войти"}
+          </button>
+        </p>
+      </form>
+
+      {isLogin && (
+        <RoleSelector
+          selectedRole={selectedRole}
+          onRoleChange={setSelectedRole}
+          title="Выберите тип аккаунта"
+        />
+      )}
+    </>
   );
 };
-
-export default AuthForm;
